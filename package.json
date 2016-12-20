@@ -1,0 +1,32 @@
+{
+  "name": "node-freefare",
+  "version": "0.1.0",
+  "description": "NodeJS binding of Freefare to access Mifare cards (classic, Ultralight and DESfire) via libNFC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ALabate/node-freefare.git"
+  },
+  "keywords": [
+    "libnfc",
+    "nfc",
+    "libfreefare",
+    "freefare",
+    "mifare",
+    "ultralight",
+    "desfire"
+  ],
+  "author": "Aurélien Labate <aurelien@labate.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ALabate/node-freefare/issues"
+  },
+  "homepage": "https://github.com/ALabate/node-freefare#readme",
+  "dependencies": {
+    "bindings": "^1.1.0",
+    "nan": "^2.4.0"
+  }
+}
