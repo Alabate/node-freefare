@@ -41,16 +41,25 @@ extern "C" {
 
 	#define NFF_MAX_DEVICES 10
 
-	// Compatibility define
-	// #define MifareTag FreefareTag
-	// #define mifare_tag_type freefare_tag_type
-	// #define CLASSIC_1K MIFARE_CLASSIC_1K
-	// #define CLASSIC_4K MIFARE_CLASSIC_4K
-	// #define DESFIRE MIFARE_DESFIRE
-	// #define ULTRALIGHT MIFARE_ULTRALIGHT
-	// #define ULTRALIGHT_C MIFARE_ULTRALIGHT_C
+
+	// Dirty hack to be compatible with last git version of libfreefare
+	#ifdef FELICA_SC_RW
+		#define MifareTag FreefareTag
+		#define mifare_tag_type freefare_tag_type
+		#define CLASSIC_1K MIFARE_CLASSIC_1K
+		#define CLASSIC_4K MIFARE_CLASSIC_4K
+		#define DESFIRE MIFARE_DESFIRE
+		#define ULTRALIGHT MIFARE_ULTRALIGHT
+		#define ULTRALIGHT_C MIFARE_ULTRALIGHT_C
+		#define MifareTag FreefareTag
+	#endif
+
+
+
 
 	// Global vars
 	extern nfc_context* libnfc_context;
+
+
 
 #endif /* NFF_COMMON_H */
