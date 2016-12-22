@@ -1,5 +1,5 @@
 {
-  "name": "node-freefare",
+  "name": "freefare",
   "version": "0.1.1",
   "description": "NodeJS binding of Freefare to access Mifare cards (classic, Ultralight and DESfire) via libNFC",
   "main": "index.js",
