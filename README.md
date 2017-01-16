@@ -39,7 +39,7 @@ When a Freefare object is created, it automatically initialize LibNFC. Once init
 
 Give a list of available NFC devices
 
-**Returns**: `Promise.&lt;Array.&lt;Device&gt;&gt;`, A promise to the `Device` list.
+**Returns**: `Promise.<Array.<Device>>`, A promise to the `Device` list.
 
 
 ### Class: Device
@@ -62,7 +62,7 @@ Close device to release memory and device
 
 List of detected tags
 
-**Returns**: `Promise.&lt;Array.&lt;(Tag|MifareUltralightTag|MifareClassicTag|MifareDesfireTag)&gt;&gt;`, A promise to the list of `Tag`
+**Returns**: `Promise.<Array.<(Tag|MifareUltralightTag|MifareClassicTag|MifareDesfireTag)>>`, A promise to the list of `Tag`
 
 
 ### Class: Tag
@@ -112,7 +112,7 @@ Read a page on the tag
 
 * **page**: `Number`, The page number between 0 and 11
 
-**Returns**: `Promise.&lt;Buffer&gt;`, A promise to the read data (in a 4 bytes buffer)
+**Returns**: `Promise.<Buffer>`, A promise to the read data (in a 4 bytes buffer)
 
 #### MifareUltralightTag.write(page, buf)
 
@@ -164,7 +164,7 @@ Read the given block
 
 * **block**: `Number`, The block number between 0 and 63 (for 1k)
 
-**Returns**: `Promise.&lt;Buffer&gt;`, A promise to the read data (in a 16 bytes buffer)
+**Returns**: `Promise.<Buffer>`, A promise to the read data (in a 16 bytes buffer)
 
 #### MifareClassicTag.write(block, data)
 
@@ -197,7 +197,7 @@ Read a value block
 
 * **block**: `Number`, The block number between 0 and 63 (for 1k)
 
-**Returns**: `Promise.&lt;Object&gt;`, A promise to an object containing value and adr : `{adr: 0, value: 0}`
+**Returns**: `Promise.<Object>`, A promise to an object containing value and adr : `{adr: 0, value: 0}`
 
 #### MifareClassicTag.incrementValue(block, amount)
 
@@ -286,7 +286,7 @@ Authenticate with a 3DES key
 
 List application IDs (AID)
 
-**Returns**: `Promise.&lt;Array.&lt;Number&gt;&gt;`, A promise to the AID list
+**Returns**: `Promise.<Array.<Number>>`, A promise to the AID list
 
 #### MifareDesfireTag.selectApplication(aid)
 
@@ -302,7 +302,7 @@ Select an application
 
 List file IDs (AID)
 
-**Returns**: `Promise.&lt;Array.&lt;Number&gt;&gt;`, A promise to the File ID list
+**Returns**: `Promise.<Array.<Number>>`, A promise to the File ID list
 
 ### MifareDesfireTag.read(file, offset, length)
 
@@ -314,7 +314,7 @@ Read the given file
 * **offset**: `Number`, The number of bytes before we start reading in the file
 * **length**: `Number`, The number of bytes we will read in the file
 
-**Returns**: `Promise.&lt;Buffer&gt;`, A promise to the read data
+**Returns**: `Promise.<Buffer>`, A promise to the read data
 
 ### MifareDesfireTag.write(file, offset, length, data)
 
