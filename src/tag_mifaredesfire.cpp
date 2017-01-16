@@ -186,8 +186,11 @@ NAN_METHOD(Tag::mifareDesfire_getApplicationIds) {
 
 class mifareDesfire_selectApplicationWorker : public AsyncWorker {
     public:
-        mifareDesfire_selectApplicationWorker(Callback *callback, MifareTag tag, uint32_t aid)
-        : AsyncWorker(callback), tag(tag), aid(aid), error(0) {}
+        mifareDesfire_selectApplicationWorker(Callback *callback, MifareTag tag, uint8_t *aid)
+        : AsyncWorker(callback), tag(tag), error(0) {
+            this->aid = aid[2] | (aid[1]<<8) | (aid[0]<<16);
+        }
+
 
         ~mifareDesfire_selectApplicationWorker() {}
 
@@ -217,7 +220,7 @@ class mifareDesfire_selectApplicationWorker : public AsyncWorker {
 NAN_METHOD(Tag::mifareDesfire_selectApplication) {
     Tag* obj = ObjectWrap::Unwrap<Tag>(info.This());
     Callback *callback = new Callback(info[1].As<v8::Function>());
-    AsyncQueueWorker(new mifareDesfire_selectApplicationWorker(callback, obj->tag, info[0]->Uint32Value()));
+    AsyncQueueWorker(new mifareDesfire_selectApplicationWorker(callback, obj->tag, reinterpret_cast<unsigned char*>(node::Buffer::Data(info[0]))));
 }
 
 

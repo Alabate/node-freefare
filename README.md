@@ -294,7 +294,7 @@ Select an application
 
 **Parameters**
 
-* **aid**: `Number`, Application id
+* **aid**: `Buffer`, Application id in 3 byte Buffer
 
 **Returns**: `Promise`, A promise to the end of the action.
 

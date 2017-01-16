@@ -41,7 +41,7 @@ freefare.listDevices()
 					console.log('----------------------');
 					// -----------
 					console.log('Select application');
-					return tag.selectApplication(0xFFFFFF);
+					return tag.selectApplication(new Buffer([0xff, 0xff, 0xff]));
 				})
 				.then(() => {
 					// -----------
