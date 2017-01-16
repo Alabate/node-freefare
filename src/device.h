@@ -32,6 +32,7 @@ class Device: public Nan::ObjectWrap {
 		static NAN_METHOD(Close);
 		static NAN_METHOD(GetConnstring);
 		static NAN_METHOD(ListTags);
+		static NAN_METHOD(Abort);
 
 
 	private:

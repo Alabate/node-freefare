@@ -66,6 +66,11 @@ List of detected tags
 
 **Returns**: `Promise.<Array.<(Tag|MifareUltralightTag|MifareClassicTag|MifareDesfireTag)>>`, A promise to the list of `Tag`
 
+#### Device.abort()
+
+Abort command blocking the device like open().
+
+**Returns**: `Promise`, A promise to the end of the action.
 
 ### Class: Tag
 A Freefare compatible NFC tag

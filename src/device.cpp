@@ -14,6 +14,7 @@ NAN_MODULE_INIT(Device::Init) {
     Nan::SetPrototypeMethod(tpl, "open", Device::Open);
     Nan::SetPrototypeMethod(tpl, "listTags", Device::ListTags);
     Nan::SetPrototypeMethod(tpl, "getConnstring", Device::GetConnstring);
+    Nan::SetPrototypeMethod(tpl, "abort", Device::Abort);
 
     constructor().Reset(Nan::GetFunction(tpl).ToLocalChecked());
     Nan::Set(target, Nan::New("Device").ToLocalChecked(),
@@ -191,4 +192,40 @@ NAN_METHOD(Device::ListTags) {
 
     Callback *callback = new Callback(info[0].As<v8::Function>());
     AsyncQueueWorker(new ListTagsWorker(callback, obj->device));
+}
+
+/**
+ * Abort current function
+ */
+class AbortWorker : public AsyncWorker {
+    public:
+        AbortWorker(Callback *callback, nfc_device *devicecde)
+        : AsyncWorker(callback), deviceabc(devicecde), error(0) {}
+
+        ~AbortWorker() {}
+
+        void Execute () {
+            error = nfc_abort_command(deviceabc);
+        }
+
+        void HandleOKCallback () {
+            v8::Local<v8::Value> argv[] = {
+                New<v8::Number>(error)
+            };
+
+            callback->Call(2, argv);
+        }
+    private:
+        // LibNFC device
+        nfc_device* deviceabc;
+
+        // Error ID or 0
+        int error;
+
+};
+NAN_METHOD(Device::Abort) {
+    Device* obj = ObjectWrap::Unwrap<Device>(info.This());
+
+    Callback *callback = new Callback(info[0].As<v8::Function>());
+    AsyncQueueWorker(new AbortWorker(callback, obj->device));
 }
