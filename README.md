@@ -1,5 +1,7 @@
 # node-freefare
 
+[![npm](https://img.shields.io/npm/v/freefare.svg)](https://www.npmjs.com/package/freefare)
+
 NodeJS binding of LibFreefare. [LibFreefare](https://github.com/nfc-tools/libfreefare) is a library to manipulate Mifare NFC smart cards (Classic, DESFire, Ultralight, etc) over LibNFC. Your reader has to be compatible with LibNFC to work with this Library (Check out the [compatibility matrix](http://nfc-tools.org/index.php?title=Devices_compatibility_matrix) to know if your device is compatible)
 
 Due to lack of time and testing material, the binding is not complete :
