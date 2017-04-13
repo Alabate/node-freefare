@@ -41,7 +41,7 @@ freefare.listDevices()
 					console.log('----------------------');
 					// -----------
 					console.log('Select application');
-					return tag.selectApplication(0xFFFFFF);
+					return tag.selectApplication(new Buffer([0xff, 0xff, 0xff]));
 				})
 				.then(() => {
 					// -----------
@@ -71,7 +71,7 @@ freefare.listDevices()
 					return tag.write(2, 0, 16, new Buffer([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0c, 0x0d, 0x0e, 0x0f, 0x10]));
 				})
 				.then(() => {
-				// -----------
+					// -----------
 					console.log('Authenticate with a read only-key');
 					return tag.authenticate3DES(0x04, new Buffer([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]));
 				})
