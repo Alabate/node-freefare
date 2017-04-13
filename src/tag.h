@@ -11,6 +11,7 @@ extern "C" {
 
 #include "common.h"
 #include "device.h"
+#include "endian.h"
 
 
 
