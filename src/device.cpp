@@ -41,8 +41,6 @@ NAN_METHOD(Device::New) {
 }
 
 v8::Handle<v8::Value> Device::Instantiate(std::string connstring) {
-	Nan::HandleScope scope;
-
 	v8::Local<v8::Value> argv[1] = { Nan::New<v8::String>(connstring).ToLocalChecked() };
 
 	v8::Local<v8::Function> cons = Nan::New(constructor());
