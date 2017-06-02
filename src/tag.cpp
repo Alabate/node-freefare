@@ -73,11 +73,13 @@ NAN_METHOD(Tag::New) {
 }
 
 v8::Handle<v8::Value> Tag::Instantiate(MifareTag constructorTag) {
+	Nan::EscapableHandleScope scope;
+
 	Tag::constructorTag = constructorTag;
 	v8::Local<v8::Value> argv[0] = {};
 
 	v8::Local<v8::Function> cons = Nan::New(constructor());
-	return Nan::NewInstance(cons, 0, argv).ToLocalChecked();
+	return scope.Escape(Nan::NewInstance(cons, 0, argv).ToLocalChecked());
 }
 
 NAN_METHOD(Tag::GetTagType) {

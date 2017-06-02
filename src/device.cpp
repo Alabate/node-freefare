@@ -41,10 +41,12 @@ NAN_METHOD(Device::New) {
 }
 
 v8::Handle<v8::Value> Device::Instantiate(std::string connstring) {
+	Nan::EscapableHandleScope scope;
+
 	v8::Local<v8::Value> argv[1] = { Nan::New<v8::String>(connstring).ToLocalChecked() };
 
 	v8::Local<v8::Function> cons = Nan::New(constructor());
-	return Nan::NewInstance(cons, 1, argv).ToLocalChecked();
+	return scope.Escape(Nan::NewInstance(cons, 1, argv).ToLocalChecked());
 }
 
 /**
