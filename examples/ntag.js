@@ -46,7 +46,11 @@ async function tagAdded(device, tag) {
                 console.log('Read data from 0x27', await tag.read(0x27));
                 
                 console.log('Disabling auth');
-                await tag.removeAuth();
+                try {
+                    await tag.disableAuth();
+                } catch (err) {
+                    console.log('Failed to remove authentication');
+                }
             } catch (err) {
                 console.log('Tag authenticate failed', err);
             }

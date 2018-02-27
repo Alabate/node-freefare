@@ -60,13 +60,14 @@ private:
 	static NAN_METHOD(mifareDesfire_write);
 	static NAN_METHOD(mifareDesfire_read);
 
-    static NAN_METHOD(ntag_connect);
-    static NAN_METHOD(ntag_disconnect);
-    static NAN_METHOD(ntag_getInfo);
-    static NAN_METHOD(ntag_getType);
+	static NAN_METHOD(ntag_connect);
+	static NAN_METHOD(ntag_disconnect);
+	static NAN_METHOD(ntag_getInfo);
+	static NAN_METHOD(ntag_getType);
 	static NAN_METHOD(ntag_read);
 	static NAN_METHOD(ntag_write);
 	static NAN_METHOD(ntag_set_auth);
+	static NAN_METHOD(ntag_disable_auth);
 	static NAN_METHOD(ntag_authenticate);
 
 private:

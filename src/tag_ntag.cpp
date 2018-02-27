@@ -137,16 +137,24 @@ NAN_METHOD(Tag::ntag_set_auth) {
 	AsyncQueueWorker(new AsyncWrapper(callback, [obj, password, pack, startPage, prot]() {
 		NTAG21xKey key = ntag21x_key_new(password, pack);
 
-		int error = ntag21x_set_key(obj->tag, key);
+		// First disable auth in case set key fails.
+		// Set key may fail by setting the password but not the pack.
+		int error = ntag21x_set_auth(obj->tag, startPage);
 		if (error < 0) {
 			error = -1;
+			goto end;
+		}
+
+		error = ntag21x_set_key(obj->tag, key);
+		if (error < 0) {
+			error = -2;
 			goto end;
 		}
 
 		// Authenticate to ensure password and pack are set correctly.
 		error = ntag21x_authenticate(obj->tag, key);
 		if (error < 0) {
-			error = -2;
+			error = -3;
 			goto end;
 		}
 
@@ -154,7 +162,7 @@ NAN_METHOD(Tag::ntag_set_auth) {
 
 		error = ntag21x_set_auth(obj->tag, startPage);
 		if (error < 0) {
-			error = -3;
+			error = -4;
 			goto end;
 		}
 
@@ -164,12 +172,38 @@ NAN_METHOD(Tag::ntag_set_auth) {
 			error = ntag21x_access_disable(obj->tag, NTAG_PROT);
 		}
 		if (error < 0) {
-			error = -4;
+			error = -5;
 		}
 
 		end:
 		delete[] password;
 		delete[] pack;
+		return [error](AsyncWrapper &wrapper) {
+			v8::Local<v8::Value> argv[] = {
+				Nan::New<v8::Number>(error)
+			};
+			wrapper.SetArgs(1, argv);
+		};
+	}));
+}
+
+NAN_METHOD(Tag::ntag_disable_auth) {
+	Tag* obj = ObjectWrap::Unwrap<Tag>(info.This());
+	Callback *callback = new Callback(info[0].As<v8::Function>());
+
+	AsyncQueueWorker(new AsyncWrapper(callback, [obj]() {
+		int error = ntag21x_set_auth(obj->tag, 0xff);
+		if (error < 0) {
+			error = -1;
+			goto end;
+		}
+
+		error = ntag21x_access_disable(obj->tag, NTAG_PROT);
+		if (error < 0) {
+			error = -2;
+		}
+
+		end:
 		return [error](AsyncWrapper &wrapper) {
 			v8::Local<v8::Value> argv[] = {
 				Nan::New<v8::Number>(error)

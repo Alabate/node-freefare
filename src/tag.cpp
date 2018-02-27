@@ -56,6 +56,7 @@ NAN_MODULE_INIT(Tag::Init) {
 	Nan::SetPrototypeMethod(tpl, "ntag_read", Tag::ntag_read);
 	Nan::SetPrototypeMethod(tpl, "ntag_write", Tag::ntag_write);
 	Nan::SetPrototypeMethod(tpl, "ntag_set_auth", Tag::ntag_set_auth);
+	Nan::SetPrototypeMethod(tpl, "ntag_disable_auth", Tag::ntag_disable_auth);
 	Nan::SetPrototypeMethod(tpl, "ntag_authenticate", Tag::ntag_authenticate);
 
 
