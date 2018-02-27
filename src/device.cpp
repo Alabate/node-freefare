@@ -1,5 +1,11 @@
 #include "device.h"
 
+extern "C" {
+#include <nfc/nfc.h>
+}
+
+#define MAX_CANDIDATES 16
+
 using namespace Nan;
 
 Device::Device(std::string connstring) : connstring(connstring) {}
@@ -13,6 +19,7 @@ NAN_MODULE_INIT(Device::Init) {
 
 	Nan::SetPrototypeMethod(tpl, "open", Device::Open);
 	Nan::SetPrototypeMethod(tpl, "listTags", Device::ListTags);
+	Nan::SetPrototypeMethod(tpl, "poll", Device::Poll);
 	Nan::SetPrototypeMethod(tpl, "getConnstring", Device::GetConnstring);
 	Nan::SetPrototypeMethod(tpl, "abort", Device::Abort);
 
@@ -228,4 +235,57 @@ NAN_METHOD(Device::Abort) {
 
 	Callback *callback = new Callback(info[0].As<v8::Function>());
 	AsyncQueueWorker(new AbortWorker(callback, obj->device));
+}
+
+int FreefarePoll(nfc_device *device, FreefareTag &tag) {
+	nfc_initiator_init(device);
+	// Disabling NP_AUTO_ISO14443_4 saves a massive amount of time. ~400ms.
+	nfc_device_set_property_bool(device, NP_AUTO_ISO14443_4, false);
+
+	// Poll infinitely
+	const uint8_t uiPollNr = 0xff;
+	// Period in increments of 150ms. So poll every 150ms.
+	const uint8_t uiPeriod = 1;
+	const nfc_modulation nmModulations[1] = {
+		{ .nmt = NMT_ISO14443A, .nbr = NBR_106 }
+	};
+	const size_t szModulations = sizeof(nmModulations) / sizeof(nfc_modulation);
+	nfc_target nt;
+
+	int res = 0;
+	if ((res = nfc_initiator_poll_target(device, nmModulations, szModulations, uiPollNr, uiPeriod, &nt)) < 0) {
+		nfc_perror(device, "nfc_initiator_poll_target");
+		return res;
+	}
+
+	if (res > 0) {
+		tag = freefare_tag_new(device, nt);
+		return res;
+	}
+
+	return 0;
+}
+
+NAN_METHOD(Device::Poll){
+	Device *obj = ObjectWrap::Unwrap<Device>(info.This());
+	Callback *callback = new Callback(info[0].As<v8::Function>());
+
+	AsyncQueueWorker(new AsyncWrapper(callback, [obj]() {
+		FreefareTag tag;
+		int res = FreefarePoll(obj->device, tag);
+		return [res, tag](AsyncWrapper &wrapper) {
+			v8::Local<v8::Value> err = Nan::Null();
+			v8::Local<v8::Value> result = Nan::Null();
+			if (res < 0) {
+				err = Nan::New<v8::Number>(res);
+			} else if (res > 0) {
+				result = Tag::Instantiate(tag);
+			}
+			v8::Local<v8::Value> argv[] = {
+				err,
+				result
+			};
+			wrapper.SetArgs(2, argv);
+		};
+	}));
 }

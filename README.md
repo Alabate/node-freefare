@@ -9,6 +9,7 @@ Due to lack of time and testing material, the binding is not complete :
 * Mifare Ultralight : fully Supported
 * Mifare Classic 1K/4K : Partially supported (enough to authenticate, write and read a data block)
 * Mifare DESFire : Partially supported (enough to select an application, authenticate in DES/3DES and read/write on a file)
+* NTAG21x : Partially supported (read/write, authnetication)
 
 If you need Freefare function which are currently not bound, submit an issue, a pull request or contact me by email.
 
@@ -65,6 +66,12 @@ Close device to release memory and device
 List of detected tags
 
 **Returns**: `Promise.<Array.<(Tag|MifareUltralightTag|MifareClassicTag|MifareDesfireTag)>>`, A promise to the list of `Tag`
+
+#### Device.poll()
+
+Polls for NFC devices infinitely. When a device is found it returns the tag.
+
+**Returns**: `Promise.<Array.<(Tag|MifareUltralightTag|MifareClassicTag|MifareDesfireTag|Ntag)>>`, A promise of a `Tag`
 
 #### Device.abort()
 

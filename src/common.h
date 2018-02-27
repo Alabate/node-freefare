@@ -60,6 +60,49 @@ NFF_ERROR_LIBNFC_UNKNOWN
 // Global vars
 extern nfc_context* libnfc_context;
 
+class AsyncWrapper : public Nan::AsyncWorker
+{
+public:
+	typedef std::function<void(AsyncWrapper &)> ResultFunction;
+	typedef std::function<ResultFunction()> ExecuteFunction;
+	AsyncWrapper(Nan::Callback *callback,
+				ExecuteFunction execute)
+		: AsyncWorker(callback), m_execute(execute) {}
 
+	~AsyncWrapper()
+	{
+		if (this->m_args != nullptr)
+		{
+			delete[] m_args;
+		}
+	}
+	void Execute()
+	{
+		m_result = this->m_execute();
+	}
+	void HandleOKCallback()
+	{
+		Nan::HandleScope scope;
+		m_result(*this);
+		callback->Call(this->m_argc, this->m_args, this->async_resource);
+	}
+
+	void SetArgs(int argc, v8::Local<v8::Value> *argv)
+	{
+		if (this->m_args != nullptr)
+		{
+			delete[] m_args;
+		}
+		this->m_args = new v8::Local<v8::Value>[argc];
+		memcpy(this->m_args, argv, sizeof(v8::Local<v8::Value>) * argc);
+		this->m_argc = argc;
+	}
+
+private:
+	ExecuteFunction m_execute;
+	ResultFunction m_result;
+	v8::Local<v8::Value> *m_args = nullptr;
+	int m_argc = 0;
+};
 
 #endif /* NFF_COMMON_H */

@@ -20,10 +20,10 @@ class Tag: public Nan::ObjectWrap {
 
 public:
 	static NAN_MODULE_INIT(Init);
-	static v8::Handle<v8::Value> Instantiate(MifareTag tag);
+	static v8::Handle<v8::Value> Instantiate(FreefareTag tag);
 
 private:
-	explicit Tag(MifareTag tag);
+	explicit Tag(FreefareTag tag);
 	~Tag();
 
 	static inline Nan::Persistent<v8::Function> & constructor();
@@ -60,15 +60,24 @@ private:
 	static NAN_METHOD(mifareDesfire_write);
 	static NAN_METHOD(mifareDesfire_read);
 
+	static NAN_METHOD(ntag_connect);
+	static NAN_METHOD(ntag_disconnect);
+	static NAN_METHOD(ntag_getInfo);
+	static NAN_METHOD(ntag_getType);
+	static NAN_METHOD(ntag_read);
+	static NAN_METHOD(ntag_write);
+	static NAN_METHOD(ntag_set_auth);
+	static NAN_METHOD(ntag_disable_auth);
+	static NAN_METHOD(ntag_authenticate);
 
 private:
 	nfc_device* device;
 	std::string connstring;
-	MifareTag tag;
+	FreefareTag tag;
 
 
 
-	static MifareTag constructorTag;
+	static FreefareTag constructorTag;
 };
 
 
