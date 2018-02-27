@@ -48,11 +48,11 @@ NAN_MODULE_INIT(Tag::Init) {
 	Nan::SetPrototypeMethod(tpl, "mifareDesfire_getFileIds", Tag::mifareDesfire_getFileIds);
 	Nan::SetPrototypeMethod(tpl, "mifareDesfire_write", Tag::mifareDesfire_write);
 	Nan::SetPrototypeMethod(tpl, "mifareDesfire_read", Tag::mifareDesfire_read);
-    
-    Nan::SetPrototypeMethod(tpl, "ntag_connect", Tag::ntag_connect);
+	
+	Nan::SetPrototypeMethod(tpl, "ntag_connect", Tag::ntag_connect);
 	Nan::SetPrototypeMethod(tpl, "ntag_disconnect", Tag::ntag_disconnect);
-    Nan::SetPrototypeMethod(tpl, "ntag_getInfo", Tag::ntag_getInfo);
-    Nan::SetPrototypeMethod(tpl, "ntag_getType", Tag::ntag_getType);
+	Nan::SetPrototypeMethod(tpl, "ntag_getInfo", Tag::ntag_getInfo);
+	Nan::SetPrototypeMethod(tpl, "ntag_getType", Tag::ntag_getType);
 	Nan::SetPrototypeMethod(tpl, "ntag_read", Tag::ntag_read);
 	Nan::SetPrototypeMethod(tpl, "ntag_write", Tag::ntag_write);
 	Nan::SetPrototypeMethod(tpl, "ntag_set_auth", Tag::ntag_set_auth);
@@ -104,7 +104,7 @@ NAN_METHOD(Tag::GetTagType) {
 		case DESFIRE: typeStr = "MIFARE_DESFIRE"; break;
 		case ULTRALIGHT: typeStr = "MIFARE_ULTRALIGHT"; break;
 		case ULTRALIGHT_C: typeStr = "MIFARE_ULTRALIGHT_C"; break;
-        case NTAG_21x: typeStr = "NTAG_21x"; break;
+		case NTAG_21x: typeStr = "NTAG_21x"; break;
 		case FELICA: typeStr = "FELICA"; break;
 		case MIFARE_MINI: typeStr = "MIFARE_MINI"; break;
 	}

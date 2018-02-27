@@ -237,7 +237,7 @@ NAN_METHOD(Device::Abort) {
 	AsyncQueueWorker(new AbortWorker(callback, obj->device));
 }
 
-int FreefareList(nfc_device *device, FreefareTag &tag) {
+int FreefarePoll(nfc_device *device, FreefareTag &tag) {
 	nfc_initiator_init(device);
 	// Disabling NP_AUTO_ISO14443_4 saves a massive amount of time. ~400ms.
 	nfc_device_set_property_bool(device, NP_AUTO_ISO14443_4, false);
@@ -272,7 +272,7 @@ NAN_METHOD(Device::Poll){
 
 	AsyncQueueWorker(new AsyncWrapper(callback, [obj]() {
 		FreefareTag tag;
-		int res = FreefareList(obj->device, tag);
+		int res = FreefarePoll(obj->device, tag);
 		return [res, tag](AsyncWrapper &wrapper) {
 			v8::Local<v8::Value> err = Nan::Null();
 			v8::Local<v8::Value> result = Nan::Null();
