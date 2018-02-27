@@ -32,6 +32,7 @@ private:
 	static NAN_METHOD(Close);
 	static NAN_METHOD(GetConnstring);
 	static NAN_METHOD(ListTags);
+	static NAN_METHOD(Poll);
 	static NAN_METHOD(Abort);
 
 
